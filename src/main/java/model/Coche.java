@@ -6,6 +6,9 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Coche {
 
@@ -18,10 +21,14 @@ public class Coche {
     @XmlElement
     private String modelo;
 
-    public Coche(String matricula, String marca, String modelo) throws CocheException {
+    @XmlElement
+    private List<Equipamiento> equipamiento;
+
+    public Coche(String matricula, String marca, String modelo, List<Equipamiento> equipamiento) throws CocheException {
         setMatricula(matricula);
         setMarca(marca);
         setModelo(modelo);
+        setEquipamiento(equipamiento);
     }
 
     public String getMatricula() {
@@ -57,5 +64,13 @@ public class Coche {
             throw new CocheException("Se debe indicar el modelo del coche");
         }
         this.modelo = modelo;
+    }
+
+    public List<Equipamiento> getEquipamiento() {
+        return equipamiento;
+    }
+
+    public void setEquipamiento(List<Equipamiento> equipamiento) {
+        this.equipamiento = equipamiento;
     }
 }
