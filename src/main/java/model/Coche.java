@@ -33,7 +33,7 @@ public class Coche {
             throw new CocheException("El coche debe tener matricula");
         }
 
-        this.matricula = matricula;
+        this.matricula = matricula.toUpperCase();
     }
 
     public String getMarca() {
