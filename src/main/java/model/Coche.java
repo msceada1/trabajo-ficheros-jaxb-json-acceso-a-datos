@@ -42,7 +42,7 @@ public class Coche {
 
     public void setMarca(String marca) throws CocheException {
         if (marca == null || marca.isBlank()) {
-            throw new CocheException("El coche debe tener matricula");
+            throw new CocheException("Se debe indicar la marca del coche");
         }
 
         this.marca = marca;
@@ -54,7 +54,7 @@ public class Coche {
 
     public void setModelo(String modelo) throws CocheException {
         if (modelo == null || modelo.isBlank()) {
-            throw new CocheException("El coche debe tener matricula");
+            throw new CocheException("Se debe indicar el modelo del coche");
         }
         this.modelo = modelo;
     }
