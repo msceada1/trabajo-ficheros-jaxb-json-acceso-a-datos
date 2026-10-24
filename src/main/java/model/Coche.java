@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.CocheException;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlAttribute;
@@ -11,21 +12,27 @@ public class Coche {
     @XmlAttribute
     private String matricula;
 
-    @XmlElement(name = "marca")
+    @XmlElement
     private String marca;
+
+    @XmlElement
     private String modelo;
 
-    public Coche(String matricula, String marca, String modelo) {
-        this.matricula = matricula;
-        this.marca = marca;
-        this.modelo = modelo;
+    public Coche(String matricula, String marca, String modelo) throws CocheException {
+        setMatricula(matricula);
+        setMarca(marca);
+        setModelo(modelo);
     }
 
     public String getMatricula() {
         return matricula;
     }
 
-    public void setMatricula(String matricula) {
+    public void setMatricula(String matricula) throws CocheException {
+        if (matricula == null || matricula.isBlank()) {
+            throw new CocheException("El coche debe tener matricula");
+        }
+
         this.matricula = matricula;
     }
 
@@ -33,7 +40,11 @@ public class Coche {
         return marca;
     }
 
-    public void setMarca(String marca) {
+    public void setMarca(String marca) throws CocheException {
+        if (marca == null || marca.isBlank()) {
+            throw new CocheException("El coche debe tener matricula");
+        }
+
         this.marca = marca;
     }
 
@@ -41,9 +52,10 @@ public class Coche {
         return modelo;
     }
 
-    public void setModelo(String modelo) {
+    public void setModelo(String modelo) throws CocheException {
+        if (modelo == null || modelo.isBlank()) {
+            throw new CocheException("El coche debe tener matricula");
+        }
         this.modelo = modelo;
     }
-
-
 }
