@@ -11,6 +11,9 @@ import java.util.Objects;
 public class Coche {
 
     @XmlAttribute
+    private int id;
+
+    @XmlElement
     private String matricula;
 
     @XmlElement
@@ -28,6 +31,14 @@ public class Coche {
         setMarca(marca);
         setModelo(modelo);
         setEquipamiento(equipamiento);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getMatricula() {
@@ -70,7 +81,7 @@ public class Coche {
     }
 
     public void setEquipamiento(List<Equipamiento> equipamiento) {
-        this.equipamiento = equipamiento;
+        this.equipamiento = new ArrayList<>();
     }
 
     @Override
