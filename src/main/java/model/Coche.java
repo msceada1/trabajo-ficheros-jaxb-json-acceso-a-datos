@@ -73,4 +73,16 @@ public class Coche {
     public void setEquipamiento(List<Equipamiento> equipamiento) {
         this.equipamiento = equipamiento;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Coche coche = (Coche) o;
+        return Objects.equals(matricula, coche.matricula);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(matricula);
+    }
 }
