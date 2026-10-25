@@ -1,10 +1,7 @@
 package model;
 
 import exceptions.CocheException;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlAttribute;
-import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +19,8 @@ public class Coche {
     @XmlElement
     private String modelo;
 
-    @XmlElement
+    @XmlElementWrapper(name = "equipamiento")
+    @XmlElement(name = "extra")
     private List<Equipamiento> equipamiento;
 
     public Coche(String matricula, String marca, String modelo, List<Equipamiento> equipamiento) throws CocheException {
