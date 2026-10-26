@@ -1,6 +1,7 @@
 package model;
 
-import exceptions.MatriculaDuplicadaException;
+import exceptions.CocheException;
+import exceptions.MatriculaException;
 import jakarta.xml.bind.annotation.*;
 
 import java.util.*;
@@ -31,11 +32,11 @@ public class Concesionario {
      * concesionario
      *
      * @param c el coche a aniadir
-     * @throws MatriculaDuplicadaException si la matricula ya estaba registrada
+     * @throws MatriculaException si la matricula ya estaba registrada
      */
-    public void addCoche(Coche c) throws MatriculaDuplicadaException {
+    public void addCoche(Coche c) throws MatriculaException {
         if (!this.coches.add(c)) {
-            throw new MatriculaDuplicadaException("Error: La matricula ya existe en el concesionario");
+            throw new MatriculaException("Error: La matricula ya existe en el concesionario");
         }
     }
 
@@ -47,10 +48,48 @@ public class Concesionario {
                 collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    public void borrarRegistro(String matricula) {
-        Coche cocheABorrar = (Coche) this.coches.stream().filter(c -> c.getMatricula().equalsIgnoreCase(matricula));
-        if (!this.coches.remove(cocheABorrar)) {
-
+    /**
+     * Metodo encargado de borrar un registro por la matricula de un coche
+     *
+     * @param matricula la matricula a borrar
+     * @throws MatriculaException si la matricula no se encontraba registrada
+     */
+    public void borrarRegistro(String matricula) throws MatriculaException {
+        Coche c = encuentraRegistroPorMatricula(matricula);
+        if (c == null) {
+            throw new MatriculaException("La matricula no ha sido encontrada");
         }
+        this.coches.remove(c);
+    }
+
+    /**
+     * metodo encargado de editar los campos de un coche excepto su matricula
+     * @param matricula la matricula del coche
+     * @param marca la marca a modificar del coche
+     * @param modelo el modelo a modificar del coche
+     * @param equipamiento el equipamiento a modificar del coche
+     * @throws MatriculaException
+     * @throws CocheException
+     */
+    public void editarRegistro(String matricula, String marca, String modelo, List<Equipamiento> equipamiento) throws MatriculaException, CocheException {
+        Coche c = encuentraRegistroPorMatricula(matricula);
+        if (c == null) {
+            throw new MatriculaException("La matricula no ha sido encontrada");
+        }
+
+        c.setMarca(marca);
+        c.setModelo(modelo);
+        c.setEquipamiento(equipamiento);
+    }
+
+    /**
+     * Metodo encargado de devolver buscando por su matricula
+     *
+     * @param matricula la matricula del coche que se desea obtener
+     * @return el objeto Coche si en el registro coincide la matricula o null en caso de que no esté la matricula
+     */
+    private Coche encuentraRegistroPorMatricula(String matricula) {
+        return this.coches.stream().filter(c -> c.getMatricula().equalsIgnoreCase(matricula.toUpperCase())).findAny()
+                .orElse(null);
     }
 }
