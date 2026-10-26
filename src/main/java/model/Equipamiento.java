@@ -23,4 +23,11 @@ public class Equipamiento {
     public void setEquipamiento(List<String> equipamiento) {
         this.equipamiento = equipamiento;
     }
+
+    @Override
+    public String toString() {
+        return "Equipamiento{" +
+                "equipamiento=" + equipamiento +
+                '}';
+    }
 }

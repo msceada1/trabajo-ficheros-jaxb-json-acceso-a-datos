@@ -29,14 +29,16 @@ public class Concesionario {
 
     /**
      * metodo encargado de aniadir un coche si la matricula no se encontraba registrada en el
-     * concesionario
+     * concesionario.
+     * La interfaz Set utiliza en el metodo add la funcion equals por lo que gestiona que no se inserte
+     * una matricula duplicada
      *
      * @param c el coche a aniadir
      * @throws MatriculaException si la matricula ya estaba registrada
      */
     public void addCoche(Coche c) throws MatriculaException {
         if (!this.coches.add(c)) {
-            throw new MatriculaException("Error: La matricula ya existe en el concesionario");
+            throw new MatriculaException("Error: La matricula" + c.getMatricula() + "ya existe en el concesionario");
         }
     }
 
@@ -57,7 +59,7 @@ public class Concesionario {
     public void borrarRegistro(String matricula) throws MatriculaException {
         Coche c = encuentraRegistroPorMatricula(matricula);
         if (c == null) {
-            throw new MatriculaException("La matricula no ha sido encontrada");
+            throw new MatriculaException("La matricula" + matricula + "no ha sido encontrada");
         }
         this.coches.remove(c);
     }
@@ -75,7 +77,7 @@ public class Concesionario {
     public void editarRegistro(String matricula, String marca, String modelo, Equipamiento equipamiento) throws MatriculaException, CocheException {
         Coche c = encuentraRegistroPorMatricula(matricula);
         if (c == null) {
-            throw new MatriculaException("La matricula no ha sido encontrada");
+            throw new MatriculaException("La matricula" + matricula + "no ha sido encontrada");
         }
 
         c.setMarca(marca);
@@ -92,5 +94,12 @@ public class Concesionario {
     private Coche encuentraRegistroPorMatricula(String matricula) {
         return this.coches.stream().filter(c -> c.getMatricula().equalsIgnoreCase(matricula.toUpperCase())).findAny()
                 .orElse(null);
+    }
+
+    @Override
+    public String toString() {
+        return "Concesionario{" +
+                "coches=" + coches +
+                "}\n";
     }
 }

@@ -25,13 +25,6 @@ public class Coche {
     @XmlElement
     private Equipamiento equipamiento;
 
-    public Coche(String matricula, String marca, String modelo, Equipamiento equipamiento) throws CocheException {
-        setMatricula(matricula);
-        setMarca(marca);
-        setModelo(modelo);
-        setEquipamiento(equipamiento);
-    }
-
     public Coche() {
     }
 
@@ -96,5 +89,16 @@ public class Coche {
     @Override
     public int hashCode() {
         return Objects.hashCode(matricula);
+    }
+
+    @Override
+    public String toString() {
+        return "Coche{" +
+                "id=" + id +
+                ", matricula='" + matricula + '\'' +
+                ", marca='" + marca + '\'' +
+                ", modelo='" + modelo + '\'' +
+                ", equipamiento=" + equipamiento +
+                '}';
     }
 }
