@@ -64,14 +64,15 @@ public class Concesionario {
 
     /**
      * metodo encargado de editar los campos de un coche excepto su matricula
-     * @param matricula la matricula del coche
-     * @param marca la marca a modificar del coche
-     * @param modelo el modelo a modificar del coche
+     *
+     * @param matricula    la matricula del coche
+     * @param marca        la marca a modificar del coche
+     * @param modelo       el modelo a modificar del coche
      * @param equipamiento el equipamiento a modificar del coche
-     * @throws MatriculaException
-     * @throws CocheException
+     * @throws MatriculaException si la matricula no se ha encontrado
+     * @throws CocheException     si los setters no validan los cambios
      */
-    public void editarRegistro(String matricula, String marca, String modelo, List<Equipamiento> equipamiento) throws MatriculaException, CocheException {
+    public void editarRegistro(String matricula, String marca, String modelo, Equipamiento equipamiento) throws MatriculaException, CocheException {
         Coche c = encuentraRegistroPorMatricula(matricula);
         if (c == null) {
             throw new MatriculaException("La matricula no ha sido encontrada");

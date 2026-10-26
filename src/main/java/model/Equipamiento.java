@@ -3,22 +3,24 @@ package model;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElementWrapper;
+
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Equipamiento {
 
     @XmlElement(name = "extra")
-    private String equipamiento;
+    private List<String> equipamiento;
 
     public Equipamiento() {
-        this.equipamiento = equipamiento;
     }
 
-    public String getEquipamiento() {
+    public List<String> getEquipamiento() {
         return equipamiento;
     }
 
-    public void setEquipamiento(String equipamiento) {
+    public void setEquipamiento(List<String> equipamiento) {
         this.equipamiento = equipamiento;
     }
 }

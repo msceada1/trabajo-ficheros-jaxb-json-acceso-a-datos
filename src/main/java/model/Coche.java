@@ -13,7 +13,7 @@ public class Coche {
     @XmlAttribute
     private int id;
 
-    @XmlElement
+    @XmlElement(name = "matricula-coche")
     private String matricula;
 
     @XmlElement
@@ -22,15 +22,17 @@ public class Coche {
     @XmlElement
     private String modelo;
 
-    @XmlElementWrapper(name = "equipamiento")
-    @XmlElement(name = "extra")
-    private List<Equipamiento> equipamiento;
+    @XmlElement
+    private Equipamiento equipamiento;
 
-    public Coche(String matricula, String marca, String modelo, List<Equipamiento> equipamiento) throws CocheException {
+    public Coche(String matricula, String marca, String modelo, Equipamiento equipamiento) throws CocheException {
         setMatricula(matricula);
         setMarca(marca);
         setModelo(modelo);
         setEquipamiento(equipamiento);
+    }
+
+    public Coche() {
     }
 
     public int getId() {
@@ -76,12 +78,12 @@ public class Coche {
         this.modelo = modelo;
     }
 
-    public List<Equipamiento> getEquipamiento() {
+    public Equipamiento getEquipamiento() {
         return equipamiento;
     }
 
-    public void setEquipamiento(List<Equipamiento> equipamiento) {
-        this.equipamiento = new ArrayList<>();
+    public void setEquipamiento(Equipamiento equipamiento) {
+        this.equipamiento = equipamiento;
     }
 
     @Override
