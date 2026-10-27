@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 @XmlRootElement(name = "concesionario-de-coches")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Concesionario {
+    static final int NUMERO_A_SUMAR_ID = 1;
 
     @XmlElementWrapper(name = "listado-coches")
     @XmlElement(name = "coche")
@@ -40,6 +41,7 @@ public class Concesionario {
         if (!this.coches.add(c)) {
             throw new MatriculaException("Error: La matricula" + c.getMatricula() + "ya existe en el concesionario");
         }
+        c.setId(coches.size() + NUMERO_A_SUMAR_ID); //actualizo el id sumando la longitud de coches que hay más 1
     }
 
     /**

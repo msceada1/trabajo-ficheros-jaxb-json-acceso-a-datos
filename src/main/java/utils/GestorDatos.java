@@ -3,6 +3,7 @@ package utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import exceptions.AppException;
+import exceptions.CocheException;
 import exceptions.MatriculaException;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
@@ -10,12 +11,18 @@ import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 import model.Coche;
 import model.Concesionario;
+import model.Equipamiento;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GestorDatos {
 
@@ -23,6 +30,8 @@ public class GestorDatos {
     private Gson gson;
     private Path rutaJsonConcesionario;
     private Path rutaJsonCoche;
+    private Path rutaCSV;
+    private Path rutaInformeConcesionario;
 
     public GestorDatos() throws AppException {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
@@ -34,6 +43,8 @@ public class GestorDatos {
         this.rutaBddXml = Path.of(pr.get("ruta_bdd_concesionario"));
         this.rutaJsonConcesionario = Path.of(pr.get("ruta_bdd_json"));
         this.rutaJsonCoche = Path.of(pr.get("ruta_bdd_coche"));
+        this.rutaCSV = Path.of(pr.get("ruta_bdd_csv"));
+        this.rutaInformeConcesionario = Path.of("ruta_informe_concesionario_txt");
     }
 
     /**
@@ -117,7 +128,7 @@ public class GestorDatos {
             return concesionarioImportado;
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            return concesionarioImportado; //devuelvo nulo si salta la excepcion
+            return concesionarioImportado; //devuelvo el concesionario con nulo si salta la excepcion
         }
     }
 
@@ -166,7 +177,44 @@ public class GestorDatos {
         }
     }
 
-    public void generarInformeTxt() {
+    public void generarInformeTxt(Concesionario cn) {
 
+    }
+
+    /**
+     * metodo encargado de agrupar los coches del concesionario por su marca
+     *
+     * @param cn el concesionario de los coches
+     * @return un mapa en el que la clave es la marca y el valor es la lista de sus coches
+     */
+    private Map<String, List<Coche>> agruparCochesPorMarca(Concesionario cn) {
+        return cn.getCoches().stream().collect(Collectors.groupingBy(Coche::getMarca));
+    }
+
+    private String obtenerEquipamientomasRepetido(Concesionario cn) {
+        Map<String, Integer> conteoExtras = new HashMap<>();
+
+        for (Coche c : cn.getCoches()) {
+            if (c.getEquipamiento() != null && c.getEquipamiento().getEquipamiento() != null) {
+                //si el coche tiene equipamiento y el equipamiento tiene extras se recorre
+
+                for (String extra : c.getEquipamiento().getEquipamiento()) {
+                    //si el extra ya esta guaradado se le suma 1 y si no se guarda como 1
+                    conteoExtras.put(extra, conteoExtras.getOrDefault(extra, 0) + 1);
+                }
+            }
+        }
+
+        String extraMasFrecuente = "no hay extras"; //le doy este valor por si no hay extras
+        int maxRepeticiones = 0;
+
+        for (Map.Entry<String, Integer> extras : conteoExtras.entrySet()) {
+            if (extras.getValue() > maxRepeticiones) {
+                maxRepeticiones = extras.getValue(); //se guarda las veces que se repite
+                extraMasFrecuente = extras.getKey(); //se guarda el nombre del extra que mas veces se repite
+            }
+        }
+
+        return extraMasFrecuente;
     }
 }
