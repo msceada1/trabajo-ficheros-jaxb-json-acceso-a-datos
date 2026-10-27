@@ -33,11 +33,17 @@ public class GestorDatos {
     private Path rutaCSV;
     private Path rutaInformeConcesionario;
 
+    //clase encargada de cargar las rutas y transferir los datos a los ficheros de almacenamiento
     public GestorDatos() throws AppException {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
         cargarRutas();
     }
 
+    /**
+     * metodo encargado de cargar las rutas del fichero config.properties
+     *
+     * @throws AppException si no se ha podido cargar alguna ruta
+     */
     private void cargarRutas() throws AppException {
         PropertiesReader pr = PropertiesReader.getInstance();
         this.rutaBddXml = Path.of(pr.get("ruta_bdd_concesionario"));
@@ -187,7 +193,15 @@ public class GestorDatos {
 
             for (Map.Entry<String, List<Coche>> entry : marcas.entrySet()) {
                 escribir.write("Marca: " + entry.getKey() + " : " + entry.getValue() + " coches\n");
+                for (Coche c : entry.getValue()) {
+                    escribir.write("Matricula: " + c.getMatricula() + ", modelo: " + c.getModelo() + "\n");
+                }
+                System.out.println();//salto de linea para espaciar
             }
+            escribir.write("datos equipamientos");
+            String extraMasRepetido = obtenerEquipamientomasRepetido(cn);
+            escribir.write("el equipamiento mas repetido es " + extraMasRepetido);
+            System.out.println();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
