@@ -191,6 +191,11 @@ public class GestorDatos {
         return cn.getCoches().stream().collect(Collectors.groupingBy(Coche::getMarca));
     }
 
+    /**
+     * metodo encargado de obtener el equipamiento que más veces se repite
+     * @param cn el concesionario donde se encuentran los coches
+     * @return el extra que mas veces se repite
+     */
     private String obtenerEquipamientomasRepetido(Concesionario cn) {
         Map<String, Integer> conteoExtras = new HashMap<>();
 
