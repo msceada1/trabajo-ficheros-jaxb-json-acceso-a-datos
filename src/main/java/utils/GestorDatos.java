@@ -120,4 +120,53 @@ public class GestorDatos {
             return concesionarioImportado; //devuelvo nulo si salta la excepcion
         }
     }
+
+    /**
+     * metodo encargado de leer el fichero csv y exportarlo
+     *
+     * @param cn el cocnesionario donde se exporta el csv
+     */
+    public void cargarCSV(Concesionario cn) {
+        try (BufferedReader br = Files.newBufferedReader(this.rutaCSV)) {
+            String linea;
+            boolean primeraLinea = true;
+
+            //hago que no lea la primera linea para que no inserte matricula modelo marca
+            while ((linea = br.readLine()) != null) {
+                if (primeraLinea) {
+                    primeraLinea = false;
+                    continue;
+                }
+                String[] campos = linea.split(";");
+
+                try {
+                    Coche cocheCSV = new Coche();
+
+                    cocheCSV.setMatricula(campos[0]);
+                    cocheCSV.setMarca(campos[1]);
+                    cocheCSV.setModelo(campos[2]);
+
+                    //si hay extras los meto en otro array
+                    if (campos.length == 4) {
+                        String[] extras = campos[3].split("\\|");
+                        Equipamiento equipamiento = new Equipamiento();
+                        equipamiento.setEquipamiento(Arrays.asList(extras));
+
+                        cocheCSV.setEquipamiento(equipamiento);
+                    }
+
+                    cn.addCoche(cocheCSV);
+                } catch (MatriculaException | CocheException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void generarInformeTxt() {
+
+    }
 }
