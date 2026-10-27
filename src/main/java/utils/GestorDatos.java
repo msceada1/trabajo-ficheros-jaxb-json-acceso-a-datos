@@ -178,7 +178,19 @@ public class GestorDatos {
     }
 
     public void generarInformeTxt(Concesionario cn) {
+        try (BufferedWriter escribir = Files.newBufferedWriter(this.rutaInformeConcesionario)) {
+            escribir.write("Informe Concesionario" + "\n");
+            escribir.write("Vehiculos registrados: " + cn.getCoches().size() + "\n");
+            escribir.write("marcas" + "\n");
 
+            Map<String, List<Coche>> marcas = agruparCochesPorMarca(cn);
+
+            for (Map.Entry<String, List<Coche>> entry : marcas.entrySet()) {
+                escribir.write("Marca: " + entry.getKey() + " : " + entry.getValue() + " coches\n");
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -193,6 +205,7 @@ public class GestorDatos {
 
     /**
      * metodo encargado de obtener el equipamiento que más veces se repite
+     *
      * @param cn el concesionario donde se encuentran los coches
      * @return el extra que mas veces se repite
      */
