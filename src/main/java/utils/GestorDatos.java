@@ -58,7 +58,7 @@ public class GestorDatos {
      *
      * @param cn el concesionario donde se guardan los registros
      */
-    public void guardarRegistroAXml(Concesionario cn) {
+    public void marshalling(Concesionario cn) {
         try {
             JAXBContext context = JAXBContext.newInstance(Concesionario.class);
             Marshaller marshaller = context.createMarshaller();
@@ -73,7 +73,7 @@ public class GestorDatos {
     /**
      * metodo encargado de pasar de xml a objeto de tipo Concesionario
      */
-    public Concesionario deXmlAObjeto() {
+    public Concesionario unmarshalling() {
         Concesionario concesionarioActualizado = null;
 
         try {
@@ -83,8 +83,6 @@ public class GestorDatos {
 
             // 2. Leer el fichero y convertirlo a objeto
             concesionarioActualizado = (Concesionario) unmarshaller.unmarshal(this.rutaBddXml.toFile());
-
-            System.out.println("Concesionario cargado:");
 
         } catch (JAXBException e) {
             e.printStackTrace();
@@ -173,10 +171,14 @@ public class GestorDatos {
                     }
 
                     cn.addCoche(cocheCSV);
+
                 } catch (MatriculaException | CocheException e) {
                     System.out.println(e.getMessage());
                 }
             }
+            System.out.println("Fichero CSV cargado");
+            marshalling(cn);
+            System.out.println(unmarshalling());
 
         } catch (IOException e) {
             System.out.println(e.getMessage());

@@ -39,7 +39,7 @@ public class Concesionario {
      */
     public void addCoche(Coche c) throws MatriculaException {
         if (!this.coches.add(c)) {
-            throw new MatriculaException("Error: La matricula" + c.getMatricula() + "ya existe en el concesionario");
+            throw new MatriculaException("Error: La matricula " + c.getMatricula() + " ya existe en el concesionario");
         }
         c.setId(coches.size() + NUMERO_A_SUMAR_ID); //actualizo el id sumando la longitud de coches que hay más 1
     }

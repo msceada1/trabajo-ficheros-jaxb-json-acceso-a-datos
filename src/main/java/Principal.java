@@ -3,8 +3,12 @@ import exceptions.CocheException;
 import exceptions.MatriculaException;
 import model.Coche;
 import model.Concesionario;
+import model.Equipamiento;
 import utils.GestorDatos;
 import utils.MiEntradaSalida;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Principal {
 
@@ -12,6 +16,7 @@ public class Principal {
     static void main() throws AppException {
         Concesionario concesionario = new Concesionario();
         GestorDatos gestorDatos = new GestorDatos();
+        programa(concesionario, gestorDatos);
     }
 
     /**
@@ -47,11 +52,29 @@ public class Principal {
         cocheCreado.setMatricula(MiEntradaSalida.leerCadena("Indica la matricula:\n"));
         cocheCreado.setMarca(MiEntradaSalida.leerCadena("Indica la marca:\n"));
         cocheCreado.setModelo(MiEntradaSalida.leerCadena("Indica el modelo:\n"));
+        cocheCreado.setEquipamiento(generaEquipamiento(MiEntradaSalida.leerEntero("cuantos objetos quieres introducir?")));
 
         return cocheCreado;
     }
 
-    private void programa(Concesionario cn, GestorDatos gd) {
+    private static Equipamiento generaEquipamiento(int cantidadEquipamiento) {
+        if (cantidadEquipamiento == 0) { //si hay equipamiento se devuelve null
+            return null;
+        }
+
+        List<String> objetos = new ArrayList<>();
+
+        for (int i = 0; i < cantidadEquipamiento; i++) {
+            String objeto = MiEntradaSalida.leerCadena("Introduce el nombre del equipamiento " + (i + 1));
+            objetos.add(objeto);
+        }
+
+        Equipamiento e = new Equipamiento();
+        e.setEquipamiento(objetos);
+        return e;
+    }
+
+    private static void programa(Concesionario cn, GestorDatos gd) {
         boolean enFuncionamiento = true;
 
         while (enFuncionamiento) {
@@ -61,25 +84,33 @@ public class Principal {
             switch (opcion) {
                 case 1:
                     gd.cargarCSV(cn);
+                    break;
                 case 2:
                     try {
                         cn.addCoche(crearCoche());
-                        gd.guardarRegistroAXml(cn);
+                        gd.marshalling(cn);
+                        System.out.println(gd.unmarshalling());
                     } catch (MatriculaException | CocheException e) {
                         System.out.println(e.getMessage());
                     }
-
+                    break;
                 case 3:
                     cn.ordenarPorMatricula();
-                    gd.guardarRegistroAXml(cn);
+                    gd.marshalling(cn);
+                    System.out.println(gd.unmarshalling());
+                    break;
                 case 4:
                     try {
                         cn.borrarRegistro(MiEntradaSalida.leerCadena("Indica la matricula del coche a borrar:\n"));
-                        gd.guardarRegistroAXml(cn);
+                        gd.marshalling(cn);
+                        System.out.println(gd.unmarshalling());
+                        System.out.println("coche borrado con exito");
                     } catch (MatriculaException e) {
                         System.out.println(e.getMessage());
                     }
+                    break;
                 case 5:
+
             }
         }
     }

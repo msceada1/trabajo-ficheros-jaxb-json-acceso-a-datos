@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<concesionario-de-coches>
+    <listado-coches>
+        <coche id="2">
+            <matricula-coche>1234ABC</matricula-coche>
+            <marca>opel</marca>
+            <modelo>zafira</modelo>
+            <equipamiento>
+                <extra>lata de rescate</extra>
+                <extra>tienda campaña</extra>
+            </equipamiento>
+        </coche>
+        <coche id="3">
+            <matricula-coche>9999RTY</matricula-coche>
+            <marca>renault</marca>
+            <modelo>clio</modelo>
+        </coche>
+    </listado-coches>
+</concesionario-de-coches>
