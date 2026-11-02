@@ -2,18 +2,48 @@
 <concesionario-de-coches>
     <listado-coches>
         <coche id="2">
+            <matricula-coche>3456JKL</matricula-coche>
+            <marca>Seat</marca>
+            <modelo>Ibiza</modelo>
+            <equipamiento>
+                <extra>Climatizador</extra>
+                <extra>Sensor de aparcamiento</extra>
+            </equipamiento>
+        </coche>
+        <coche id="3">
+            <matricula-coche>7890MNP</matricula-coche>
+            <marca>Peugeot</marca>
+            <modelo>208</modelo>
+            <equipamiento>
+                <extra>Navegador GPS</extra>
+            </equipamiento>
+        </coche>
+        <coche id="4">
+            <matricula-coche>1122QRS</matricula-coche>
+            <marca>Toyota</marca>
+            <modelo>Yaris</modelo>
+            <equipamiento>
+                <extra>Llantas de aleación</extra>
+                <extra>Techo solar</extra>
+                <extra>Cámara trasera</extra>
+            </equipamiento>
+        </coche>
+        <coche id="5">
             <matricula-coche>1234ABC</matricula-coche>
             <marca>opel</marca>
             <modelo>zafira</modelo>
             <equipamiento>
-                <extra>lata de rescate</extra>
-                <extra>tienda campaña</extra>
+                <extra>Techo Solar</extra>
+                <extra>navaja multiusos</extra>
             </equipamiento>
         </coche>
-        <coche id="3">
-            <matricula-coche>9999RTY</matricula-coche>
-            <marca>renault</marca>
-            <modelo>clio</modelo>
+        <coche id="6">
+            <matricula-coche>7890OLP</matricula-coche>
+            <marca>mercedes</marca>
+            <modelo>benz</modelo>
+            <equipamiento>
+                <extra>Techo Solar</extra>
+            </equipamiento>
         </coche>
     </listado-coches>
 </concesionario-de-coches>

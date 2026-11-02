@@ -110,7 +110,7 @@ public class GestorDatos {
      * @param concesionario El concesionario donde buscarlo.
      */
     public void exportarCocheJson(String matricula, Concesionario concesionario) throws MatriculaException {
-        Coche cocheEncontrado = concesionario.getCoches().stream().filter(c -> c.getMatricula().equals(matricula))
+        Coche cocheEncontrado = concesionario.getCoches().stream().filter(c -> c.getMatricula().equals(matricula.toUpperCase()))
                 .findAny().orElse(null);
 
         if (cocheEncontrado == null) {
@@ -124,15 +124,63 @@ public class GestorDatos {
         }
     }
 
-    public Concesionario importarConcesionarioJson() {
-        Concesionario concesionarioImportado = null;
+    /**
+     * metodo encargado de importar el fichero json a la base de datos xml, sobreescribiendolo por completo
+     *
+     * @return el concesionario importado
+     * @throws CocheException si el json esta vacio
+     */
+    public Concesionario importarConcesionarioJson() throws CocheException {
+        Concesionario nuevo = null;
+
         try (BufferedReader br = Files.newBufferedReader(this.rutaJsonConcesionario)) {
-            concesionarioImportado = gson.fromJson(br, Concesionario.class);
-            System.out.println("Concesionario importado desde JSON con éxito.");
-            return concesionarioImportado;
+            nuevo = gson.fromJson(br, Concesionario.class);
+
+            if (nuevo == null || nuevo.getCoches().isEmpty()) {
+                throw new CocheException("El JSON está vacío.");
+            }
+
+            marshalling(nuevo);
+            return nuevo;
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            return concesionarioImportado; //devuelvo el concesionario con nulo si salta la excepcion
+        }
+
+        return nuevo;
+    }
+
+    /**
+     * metodo encargado de leer el fichero json obtener el coche y pasarlo al xml
+     * @param matricula la matricula del coche a buscar
+     * @param cn el concesionario al que se se añadira el coche y despues hacer marshall
+     * @throws CocheException si el fichero json esta vacio
+     * @throws MatriculaException si en el json no habia ningun coche con esa matricula
+     */
+    public void importarCocheJson(String matricula, Concesionario cn) throws CocheException, MatriculaException {
+        try (BufferedReader br = Files.newBufferedReader(this.rutaJsonConcesionario)){
+            Concesionario cnJson = gson.fromJson(br, Concesionario.class);
+
+            if (cnJson == null || cnJson.getCoches().isEmpty()) {
+                throw new CocheException("El fichero JSON está vacío.");
+            }
+
+            Coche cocheEncontrado = null;
+            for (Coche c : cnJson.getCoches()) {
+                if (c.getMatricula().equalsIgnoreCase(matricula.toUpperCase())) {
+                    cocheEncontrado = c;
+                    break;
+                }
+            }
+
+            if (cocheEncontrado == null) {
+                throw new MatriculaException("No existe ningún coche con la matrícula " + matricula + " en el JSON.");
+            }
+
+            cn.addCoche(cocheEncontrado);
+            marshalling(cn);
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -194,13 +242,13 @@ public class GestorDatos {
             Map<String, List<Coche>> marcas = agruparCochesPorMarca(cn);
 
             for (Map.Entry<String, List<Coche>> entry : marcas.entrySet()) {
-                escribir.write("Marca: " + entry.getKey() + " : " + entry.getValue() + " coches\n");
+                escribir.write("Marca: " + entry.getKey() + " : " + entry.getValue().size() + " coches\n");
                 for (Coche c : entry.getValue()) {
                     escribir.write("Matricula: " + c.getMatricula() + ", modelo: " + c.getModelo() + "\n");
                 }
-                System.out.println();//salto de linea para espaciar
+                escribir.newLine();//salto de linea para espaciar
             }
-            escribir.write("datos equipamientos");
+            escribir.write("datos equipamientos\n");
             String extraMasRepetido = obtenerEquipamientomasRepetido(cn);
             escribir.write("el equipamiento mas repetido es " + extraMasRepetido);
             System.out.println();

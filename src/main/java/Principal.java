@@ -110,7 +110,45 @@ public class Principal {
                     }
                     break;
                 case 5:
+                    try {
+                        cn.editarRegistro(
+                                MiEntradaSalida.leerCadena("Indica la matricula del coche que deseas modificar:\n"),
+                                MiEntradaSalida.leerCadena("Marca:\n"),
+                                MiEntradaSalida.leerCadena("Modelo:"),
+                                generaEquipamiento(MiEntradaSalida.leerEntero("Indica la cantidad de equipamiento que deseas introducir:\n")));
+                        gd.marshalling(cn);
+                    } catch (MatriculaException | CocheException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 6:
+                    gd.exportarConcesionarioJson(cn);
+                    break;
 
+                case 7:
+                    try {
+                        gd.exportarCocheJson(MiEntradaSalida.leerCadena("Indica la matricula del coche a exportar:\n"), cn);
+                    } catch (MatriculaException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 8:
+                    try {
+                        cn = gd.importarConcesionarioJson();
+                    } catch (CocheException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 9:
+                    try {
+                        gd.importarCocheJson(MiEntradaSalida.leerCadena("Indica la matricula:\n"), cn);
+                    } catch (CocheException | MatriculaException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 10:
+                    gd.generarInformeTxt(cn);
+                    break;
             }
         }
     }

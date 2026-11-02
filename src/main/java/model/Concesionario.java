@@ -59,7 +59,7 @@ public class Concesionario {
      * @throws MatriculaException si la matricula no se encontraba registrada
      */
     public void borrarRegistro(String matricula) throws MatriculaException {
-        Coche c = encuentraRegistroPorMatricula(matricula);
+        Coche c = encuentraRegistroPorMatricula(matricula.toUpperCase());
         if (c == null) {
             throw new MatriculaException("La matricula" + matricula + "no ha sido encontrada");
         }
@@ -79,7 +79,7 @@ public class Concesionario {
     public void editarRegistro(String matricula, String marca, String modelo, Equipamiento equipamiento) throws MatriculaException, CocheException {
         Coche c = encuentraRegistroPorMatricula(matricula);
         if (c == null) {
-            throw new MatriculaException("La matricula" + matricula + "no ha sido encontrada");
+            throw new MatriculaException("La matricula " + matricula + " no ha sido encontrada");
         }
 
         c.setMarca(marca);
