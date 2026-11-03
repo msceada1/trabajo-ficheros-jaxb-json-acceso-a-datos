@@ -77,11 +77,9 @@ public class GestorDatos {
         Concesionario concesionarioActualizado = null;
 
         try {
-            // 1. Crear contexto y Unmarshaller
             JAXBContext context = JAXBContext.newInstance(Concesionario.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
 
-            // 2. Leer el fichero y convertirlo a objeto
             concesionarioActualizado = (Concesionario) unmarshaller.unmarshal(this.rutaBddXml.toFile());
 
         } catch (JAXBException e) {
@@ -151,13 +149,14 @@ public class GestorDatos {
 
     /**
      * metodo encargado de leer el fichero json obtener el coche y pasarlo al xml
+     *
      * @param matricula la matricula del coche a buscar
-     * @param cn el concesionario al que se se añadira el coche y despues hacer marshall
-     * @throws CocheException si el fichero json esta vacio
+     * @param cn        el concesionario al que se se añadira el coche y despues hacer marshall
+     * @throws CocheException     si el fichero json esta vacio
      * @throws MatriculaException si en el json no habia ningun coche con esa matricula
      */
     public void importarCocheJson(String matricula, Concesionario cn) throws CocheException, MatriculaException {
-        try (BufferedReader br = Files.newBufferedReader(this.rutaJsonConcesionario)){
+        try (BufferedReader br = Files.newBufferedReader(this.rutaJsonConcesionario)) {
             Concesionario cnJson = gson.fromJson(br, Concesionario.class);
 
             if (cnJson == null || cnJson.getCoches().isEmpty()) {
@@ -233,6 +232,11 @@ public class GestorDatos {
         }
     }
 
+    /**
+     * metodo encargado de llevar a cabo la realizacion del informe txt
+     *
+     * @param cn el concesionario con el que se trabaja
+     */
     public void generarInformeTxt(Concesionario cn) {
         try (BufferedWriter escribir = Files.newBufferedWriter(this.rutaInformeConcesionario)) {
             escribir.write("Informe Concesionario" + "\n");

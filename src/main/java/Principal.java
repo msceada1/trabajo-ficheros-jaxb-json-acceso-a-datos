@@ -57,8 +57,14 @@ public class Principal {
         return cocheCreado;
     }
 
+    /**
+     * metodo encargado de crear equipamiento
+     *
+     * @param cantidadEquipamiento la cantidad de equipamiento que el usuario desea introducir en el coche
+     * @return un objeto equipamiento con una lista de string
+     */
     private static Equipamiento generaEquipamiento(int cantidadEquipamiento) {
-        if (cantidadEquipamiento == 0) { //si hay equipamiento se devuelve null
+        if (cantidadEquipamiento == 0) { //si el usuario no quiere meter equipamiento se devuelve null
             return null;
         }
 
@@ -74,6 +80,12 @@ public class Principal {
         return e;
     }
 
+    /**
+     * metodo encargado de llevar a cabo el funcionamiento del programa
+     *
+     * @param cn el consesionario instanciado en el main
+     * @param gd el gestor de datos instanciado en el main
+     */
     private static void programa(Concesionario cn, GestorDatos gd) {
         boolean enFuncionamiento = true;
 
@@ -148,6 +160,9 @@ public class Principal {
                     break;
                 case 10:
                     gd.generarInformeTxt(cn);
+                    break;
+                case 11:
+                    enFuncionamiento = false;
                     break;
             }
         }
